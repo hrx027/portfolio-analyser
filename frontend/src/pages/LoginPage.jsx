@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = () => {
@@ -17,7 +17,7 @@ const LoginPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.post('/login', form);
+      const res = await api.post('/login', form);
       localStorage.setItem('token', res.data.access_token);
       navigate('/dashboard');
     } catch (err) {

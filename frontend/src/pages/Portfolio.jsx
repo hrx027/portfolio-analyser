@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -16,10 +16,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/orders', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.get('/orders');
       setOrders(response.data);
     } catch (err) {
       setError('Failed to fetch orders');
@@ -31,10 +28,7 @@ const Orders = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this order?')) return;
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`/orders/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/orders/delete/${id}`);
       setOrders((prev) => prev.filter((o) => o.id !== id));
     } catch (err) {
       alert('Failed to delete order');
@@ -44,10 +38,7 @@ const Orders = () => {
   const handleDeleteAll = async () => {
     if (!window.confirm('Are you sure you want to delete ALL your orders? This cannot be undone.')) return;
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete('/orders/all', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete('/orders/all');
       setOrders([]);
     } catch (err) {
       alert('Failed to delete all orders');
@@ -78,16 +69,11 @@ const Orders = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
     try {
       if (editingOrder) {
-        await axios.put(`/orders/update/${editingOrder.id}`, form, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.put(`/orders/update/${editingOrder.id}`, form);
       } else {
-        await axios.post('/orders/add', form, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.post('/orders/add', form);
       }
       setShowForm(false);
       setEditingOrder(null);

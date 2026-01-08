@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
 const ImportPage = () => {
   const [file, setFile] = useState(null);
@@ -25,11 +25,9 @@ const ImportPage = () => {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('/import', formData, {
+      await api.post('/import', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
         },
       });
       setSuccess('File imported successfully!');

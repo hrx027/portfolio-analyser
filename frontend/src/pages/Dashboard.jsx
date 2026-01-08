@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
@@ -13,10 +13,7 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/portfolio/analysis', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.get('/portfolio/analysis');
       setData(response.data);
     } catch (err) {
       setError('Failed to fetch dashboard data');

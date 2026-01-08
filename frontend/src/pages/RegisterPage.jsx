@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
@@ -21,7 +21,7 @@ const RegisterPage = () => {
     }
     setLoading(true);
     try {
-      await axios.post('/register', { email: form.email, password: form.password });
+      await api.post('/register', { email: form.email, password: form.password });
       navigate('/login');
     } catch (err) {
       setError('Registration failed. Try a different email.');

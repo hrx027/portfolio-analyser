@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import SectorPieChart from '../components/SectorPieChart';
 import MarketCapPieChart from '../components/MarketCapPieChart';
@@ -49,12 +49,7 @@ const AnalysisPage = () => {
       setAiLoading(true);
       setAiError("");
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.post("/api/ai/summary", {}, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-        });
+        const response = await api.post("/api/ai/summary", {});
         setAiSummary(response.data.summary);
       } catch (err) {
         console.error("AI Summary Error:", err);
@@ -69,12 +64,10 @@ const AnalysisPage = () => {
   const fetchAllAnalysisData = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
       const [compositionRes, performanceRes, behaviorRes] = await Promise.all([
-        axios.get('/portfolio/composition', { headers }),
-        axios.get('/portfolio/performance', { headers }),
-        axios.get('/portfolio/behavior', { headers })
+        api.get('/portfolio/composition'),
+        api.get('/portfolio/performance'),
+        api.get('/portfolio/behavior')
       ]);
       setCompositionData(compositionRes.data);
       setPerformanceData(performanceRes.data);

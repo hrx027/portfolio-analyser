@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request , APIRouter
+from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from .auth import router as auth_router
 from .portfolio import router as portfolio_router
@@ -19,6 +19,12 @@ import app.models
 import subprocess
 
 app = FastAPI()
+
+@app.on_event("startup")
+async def startup_event():
+    print("Registered Routes:")
+    for route in app.routes:
+        print(f"Path: {route.path} | Name: {route.name} | Methods: {route.methods}")
 
 app.add_middleware(
     CORSMiddleware,

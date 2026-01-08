@@ -31,7 +31,7 @@ cd portfolio
   cd backend
   python -m venv venv
   source venv/bin/activate  # or venv\Scripts\activate on Windows
-  pip install -r app/requirements.txt
+  pip install -r requirements.txt
   ```
 - Set up your PostgreSQL database and update the `DATABASE_URL` in your environment variables or `.env` file.
 - **Set your Groq API key as an environment variable:**

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 import uuid
 from .models import Order
@@ -22,15 +22,15 @@ class OrderCreate(OrderBase):
     pass
 
 class OrderUpdate(BaseModel):
-    quantity: float | None = None
-    price: float | None = None
-    date: datetime | None = None
-    type: str | None = None
+    quantity: Optional[float] = None
+    price: Optional[float] = None
+    date: Optional[datetime] = None
+    type: Optional[str] = None
 
 class OrderOut(OrderBase):
     id: uuid.UUID
-    class Config:
-        orm_mode = True
+    
+    model_config = {"from_attributes": True}  # Pydantic v2 replacement for orm_mode
 
 # Add order
 @router.post("/orders/add", response_model=OrderOut)
